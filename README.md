@@ -1,3 +1,3 @@
 # ChatBot
 Sih Problem Statement
--[ChatBot](https://akhincheriyan.github.io/ChatBot/ChatBot/index.html)
+[ChatBot](https://akhincheriyan.github.io/ChatBot/ChatBot/index.html)
