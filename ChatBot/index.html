@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Health Awareness Chatbot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+      color: #2c3e50;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .content {
+      text-align: center;
+      padding: 50px 20px 20px 20px;
+      max-width: 700px;
+      margin-top: 40px;
+    }
+
+    h1 {
+      margin-bottom: 15px;
+      font-size: 2.2em;
+    }
+
+    p {
+      font-size: 1.1em;
+      color: #34495e;
+      margin-bottom: 25px;
+    }
+
+    .lang-switch {
+      margin-bottom: 20px;
+      font-size: 1em;
+    }
+
+    select {
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 1px solid #2c3e50;
+      font-size: 1em;
+    }
+
+    .faq-buttons {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .faq-buttons button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: #2c3e50;
+      color: white;
+      cursor: pointer;
+      font-size: 0.95em;
+      transition: background 0.3s;
+    }
+
+    .faq-buttons button:hover {
+      background-color: #34495e;
+    }
+
+    /* Dialogflow Messenger Customization */
+    df-messenger {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+  --df-messenger-bot-message: #2c3e50;
+  --df-messenger-user-message: #11d7ff;
+  --df-messenger-font-color: #ffffff;
+  --df-messenger-chat-background-color: #1e272e;
+  --df-messenger-button-titlebar-color: #11d7ff;
+  --df-messenger-send-icon: #000000;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="content">
+    <h1>AI-Powered Health Awareness Chatbot</h1>
+    <p>Ask me about diseases, symptoms, and prevention tips!</p>
+
+    <!-- Language Switch -->
+    <div class="lang-switch">
+      <label for="lang">Choose Language: </label>
+      <select id="lang" onchange="switchLanguage()">
+        <option value="en" selected>English</option>
+        <option value="hi">हिन्दी</option>
+      </select>
+    </div>
+     <p class="site-desc">HealTrack is a compact, user-friendly health-awareness site that embeds an AI chat interface to provide quick, accessible guidance on common health topics. 
+      
+
+    <br><b>Purpose:</b> Teach and assist users about diseases, symptoms, prevention, vaccinations, first aid, nutrition, and exercise.
+    <br><b>Interface:</b> A conversational chatbot (Dialogflow Messenger) appears as a floating widget for instant interaction.
+    <br><b>Language support:</b> English and Hindi toggleable via the language selector; chat widget language updated accordingly.
+    <br><b>Quick actions:</b> FAQ buttons trigger topic-specific events so users get fast, relevant responses.
+    <br><b>Design:</b> Clean, centered layout with a calming gradient background and accessible typography for readability.
+</p>
+
+
+    <!-- FAQ Buttons -->
+    <div class="faq-buttons">
+      <button onclick="sendEvent('COVID_EVENT')">COVID-19</button>
+      <button onclick="sendEvent('DENGUE_EVENT')">Dengue</button>
+      <button onclick="sendEvent('MALARIA_EVENT')">Malaria</button>
+      <button onclick="sendEvent('VACCINE_EVENT')">Vaccination</button>
+      <button onclick="sendEvent('FIRSTAID_EVENT')">First Aid</button>
+      <button onclick="sendEvent('NUTRITION_EVENT')">Nutrition</button>
+      <button onclick="sendEvent('EXERCISE_EVENT')">Exercise</button>
+    </div>
+  </div>
+ 
+  <!-- Dialogflow Messenger -->
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+chat-icon="robot.png"
+  chat-title="HealTrack"
+  agent-id="dcfba93f-e078-4dd8-bfe8-96377228c311"
+  language-code="en"
+  environment="draft"
+></df-messenger>
+</body>
+</html>
