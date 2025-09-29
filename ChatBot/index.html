@@ -1,133 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Health Awareness Chatbot</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HealTrack — Health Awareness Chatbot</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
+    :root{
+      --gradient-1: linear-gradient(135deg,#00f5a0,#00d9f5,#b621fe,#ff6ec7);
+      --bg-speed: 12s;
+      --surface-bg: rgba(10,10,20,0.55);
+      --surface-border: rgba(255,255,255,0.08);
+      --text-main: #f8f9fa;
+      --muted: rgba(248,249,250,0.8);
+      --accent-a: #ff8c37;
+      --accent-b: #ff512f;
+      --primary: #6a11cb;
+      --chat-bot-msg: #e1e1e1;
+      --chat-user-msg: #6a11cb;
+    }
+
+    body.dark-mode {
+      --surface-bg: rgba(20,24,31,0.70);
+      --surface-border: rgba(255,255,255,0.04);
+      --text-main: #eef2ff;
+      --muted: rgba(238,242,255,0.85);
+      --accent-a: #4bd3d1;
+      --accent-b: #26a69a;
+      --primary: #26a69a;
+      --chat-bot-msg: #2b2f33;
+      --chat-user-msg: #26a69a;
+      background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+      background-size: 400% 400%;
+      animation: darkGradientShift var(--bg-speed) ease infinite;
+    }
+
+    * { box-sizing: border-box; }
+    html,body { height: 100%; margin: 0; padding: 0; }
     body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
-      color: #2c3e50;
-      height: 100vh;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--text-main);
+      background: var(--gradient-1);
+      background-size: 400% 400%;
+      animation: gradientShift var(--bg-speed) ease infinite;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
       align-items: center;
+      padding-bottom: 80px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x: hidden;
+      transition: background 0.5s, color 0.5s;
     }
 
-    .content {
-      text-align: center;
-      padding: 50px 20px 20px 20px;
-      max-width: 700px;
-      margin-top: 40px;
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes darkGradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 50% 100%; }
+      100% { background-position: 0% 50%; }
     }
 
-    h1 {
-      margin-bottom: 15px;
-      font-size: 2.2em;
-    }
-
-    p {
-      font-size: 1.1em;
-      color: #34495e;
-      margin-bottom: 25px;
-    }
-
-    .lang-switch {
-      margin-bottom: 20px;
-      font-size: 1em;
-    }
-
-    select {
-      padding: 5px 10px;
-      border-radius: 5px;
-      border: 1px solid #2c3e50;
-      font-size: 1em;
-    }
-
-    .faq-buttons {
-      margin-top: 15px;
+    header {
+      width: 100%;
+      max-width: 1200px;
+      padding: 14px 20px;
+      margin: 18px;
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 14px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--surface-border);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.35);
+      transition: background 0.5s, color 0.5s;
     }
 
-    .faq-buttons button {
-      padding: 8px 15px;
-      border: none;
-      border-radius: 8px;
-      background-color: #2c3e50;
-      color: white;
-      cursor: pointer;
-      font-size: 0.95em;
-      transition: background 0.3s;
-    }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:700; font-size:1.15rem; letter-spacing:0.2px; }
+    .logo { width:42px; height:42px; border-radius:10px; background:linear-gradient(135deg,var(--primary),#a24bfd); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(106,17,203,0.25); font-weight:700; }
+    .dark-toggle { width:36px;height:36px;border-radius:50%; display:inline-flex;align-items:center;justify-content:center; background: rgba(0,0,0,0.45); color:var(--text-main); border:none; cursor:pointer; box-shadow: 0 6px 18px rgba(0,0,0,0.28); transition: transform .18s ease, background .18s, color 0.5s; }
+    .dark-toggle:hover { transform: translateY(-3px); background: rgba(0,0,0,0.6); }
 
-    .faq-buttons button:hover {
-      background-color: #34495e;
-    }
+    .container { width: calc(100% - 40px); max-width: 980px; margin-top: 8px; }
+    .card { background: var(--surface-bg); border-radius: 18px; padding: 32px; color: var(--text-main); border: 1px solid var(--surface-border); backdrop-filter: blur(10px); box-shadow: 0 12px 40px rgba(2,6,23,0.4); transition: background 0.5s, color 0.5s, box-shadow 0.5s; }
+    .hero { text-align:center; margin-bottom: 18px; }
+    .hero h1 { margin:0 0 10px 0; font-size:2.2rem; line-height:1.05; text-shadow: 0 6px 26px rgba(0,0,0,0.35); }
+    .hero p { margin: 0 0 18px 0; color: var(--muted); font-size:1.05rem; }
 
-    /* Dialogflow Messenger Customization */
-    df-messenger {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-  --df-messenger-bot-message: #2c3e50;
-  --df-messenger-user-message: #11d7ff;
-  --df-messenger-font-color: #ffffff;
-  --df-messenger-chat-background-color: #1e272e;
-  --df-messenger-button-titlebar-color: #11d7ff;
-  --df-messenger-send-icon: #000000;
-    }
+    .row { display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; margin-bottom:18px; }
+    select.lang { background: rgba(255,255,255,0.06); border: 1px solid var(--surface-border); color: var(--text-main); padding:10px 12px;border-radius:10px; font-weight:600; cursor:pointer; transition: background 0.5s, color 0.5s; }
+
+    .faq { display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:20px; }
+    .faq button { padding:10px 18px;border-radius:12px;border:none; background: linear-gradient(135deg,var(--accent-a),var(--accent-b)); color:white;font-weight:700;cursor:pointer; box-shadow: 0 8px 22px rgba(0,0,0,0.28); transition: transform .15s ease, box-shadow .15s ease, background 0.5s; }
+    .faq button:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(0,0,0,0.35); }
+
+    .grid { display:grid; grid-template-columns: 1fr; gap:18px; }
+    @media(min-width:900px){ .grid { grid-template-columns: 1fr 380px; } }
+    .about { padding-right: 8px; }
+    .side { background: rgba(255,255,255,0.03); padding:16px;border-radius:12px;border:1px solid var(--surface-border); transition: background 0.5s, color 0.5s, box-shadow 0.5s; }
+    .side h3 { margin:4px 0 10px 0; color:var(--muted); font-size:0.95rem; }
+    .about h2 { margin-top:0; font-size:1.25rem; color:var(--muted); }
+    .about ul { margin:8px 0 0 18px; color:var(--muted); }
+    .about p { color:var(--muted); }
+    footer { margin-top:18px;color:rgba(255,255,255,0.75); font-size:0.92rem; opacity:0.95; text-align:center; }
+
+    df-messenger { position: fixed; bottom: 20px; right: 20px; z-index: 9999; --df-messenger-bot-message: var(--chat-bot-msg); --df-messenger-user-message: var(--chat-user-msg); --df-messenger-font-color: #111; --df-messenger-chat-background-color: #fff; --df-messenger-button-titlebar-color: var(--primary); --df-messenger-send-icon: #fff; border-radius: 12px; }
   </style>
 </head>
 <body>
 
-  <div class="content">
-    <h1>AI-Powered Health Awareness Chatbot</h1>
-    <p>Ask me about diseases, symptoms, and prevention tips!</p>
-
-    <!-- Language Switch -->
-    <div class="lang-switch">
-      <label for="lang">Choose Language: </label>
-      <select id="lang" onchange="switchLanguage()">
-        <option value="en" selected>English</option>
-        <option value="hi">हिन्दी</option>
-      </select>
+  <header>
+    <div class="brand">
+      <div class="logo">H</div>
+      HealTrack
     </div>
-     <p class="site-desc">HealTrack is a compact, user-friendly health-awareness site that embeds an AI chat interface to provide quick, accessible guidance on common health topics. 
-      
-
-    <br><b>Purpose:</b> Teach and assist users about diseases, symptoms, prevention, vaccinations, first aid, nutrition, and exercise.
-    <br><b>Interface:</b> A conversational chatbot (Dialogflow Messenger) appears as a floating widget for instant interaction.
-    <br><b>Language support:</b> English and Hindi toggleable via the language selector; chat widget language updated accordingly.
-    <br><b>Quick actions:</b> FAQ buttons trigger topic-specific events so users get fast, relevant responses.
-    <br><b>Design:</b> Clean, centered layout with a calming gradient background and accessible typography for readability.
-</p>
-
-
-    <!-- FAQ Buttons -->
-    <div class="faq-buttons">
-      <button onclick="sendEvent('COVID_EVENT')">COVID-19</button>
-      <button onclick="sendEvent('DENGUE_EVENT')">Dengue</button>
-      <button onclick="sendEvent('MALARIA_EVENT')">Malaria</button>
-      <button onclick="sendEvent('VACCINE_EVENT')">Vaccination</button>
-      <button onclick="sendEvent('FIRSTAID_EVENT')">First Aid</button>
-      <button onclick="sendEvent('NUTRITION_EVENT')">Nutrition</button>
-      <button onclick="sendEvent('EXERCISE_EVENT')">Exercise</button>
+    <div>
+      <button class="dark-toggle" id="darkBtn" title="Toggle dark mode" onclick="toggleDark()">☾</button>
     </div>
+  </header>
+
+  <div class="container" role="main">
+    <div class="card">
+      <div class="hero">
+        <h1>HealTrack — AI Health Assistant</h1>
+        <p>Quick, reliable guidance on illnesses, symptoms, prevention and wellness tips.</p>
+      </div>
+
+      <div class="row">
+        <label for="lang" style="display:flex;align-items:center;gap:8px;color:var(--muted);">Language:
+          <select id="lang" class="lang" onchange="switchLanguage()">
+            <option value="en" selected>English</option>
+            <option value="hi">हिन्दी</option>
+          </select>
+        </label>
+      </div>
+
+            <div class="faq" aria-label="Quick actions">
+        <button onclick="sendEvent('COVID_EVENT')">COVID-19</button>
+        <button onclick="sendEvent('DENGUE_EVENT')">Dengue</button>
+        <button onclick="sendEvent('MALARIA_EVENT')">Malaria</button>
+        <button onclick="sendEvent('VACCINE_EVENT')">Vaccination</button>
+        <button onclick="sendEvent('FIRSTAID_EVENT')">First Aid</button>
+        <button onclick="sendEvent('NUTRITION_EVENT')">Nutrition</button>
+        <button onclick="sendEvent('EXERCISE_EVENT')">Exercise</button>
+      </div>
+
+      <div class="grid">
+        <section class="about">
+          <h2>About HealTrack</h2>
+          <p>HealTrack is a compact, user-friendly platform embedding an AI chatbot to provide quick and accessible guidance on common health topics.</p>
+
+          <h3>Purpose</h3>
+          <ul>
+            <li>Educate users about diseases, symptoms and prevention</li>
+            <li>Provide tips on vaccination, first aid, nutrition and exercise</li>
+            <li>Keep users informed with health notifications and reminders.</li>
+          </ul>
+
+          <h3>How it works</h3>
+          <p>Ask a question, pick a quick action, or use the chat widget at the bottom-right. The bot is powered by Dialogflow ES.</p>
+        </section>
+
+        <aside class="side" aria-labelledby="quick-info">
+          <h3 id="quick-info">Quick Info</h3>
+          <p><strong>Language:</strong> English &amp; Hindi</p>
+          <p><strong>Integration:</strong> Dialogflow Messenger (embedded)</p>
+          <p><strong>Hosting:</strong> Works on HTTPS domains; run locally with <code>python3 -m http.server 8000</code>.</p>
+        </aside>
+      </div>
+    </div>
+
+    <footer>© 2025 HealTrack</footer>
   </div>
- 
+
   <!-- Dialogflow Messenger -->
   <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-<df-messenger
-chat-icon="robot.png"
-  chat-title="HealTrack"
-  agent-id="dcfba93f-e078-4dd8-bfe8-96377228c311"
-  language-code="en"
-  environment="draft"
-></df-messenger>
+  <df-messenger
+    chat-title="HealTrack"
+    chat-icon="robot.png"
+    agent-id="dcfba93f-e078-4dd8-bfe8-96377228c311"
+    language-code="en"
+    environment="draft"
+  ></df-messenger>
+
+  <!-- Scripts -->
+  <script>
+  // ----- Dark Mode Toggle -----
+  function toggleDark(){
+    document.body.classList.toggle('dark-mode');
+    const btn = document.getElementById('darkBtn');
+    btn.textContent = document.body.classList.contains('dark-mode') ? '☼' : '☾';
+    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    updateMessengerTheme();
+  }
+
+  function updateMessengerTheme(){
+    const messenger = document.querySelector('df-messenger');
+    if (!messenger) return;
+    if (document.body.classList.contains('dark-mode')) {
+      messenger.style.setProperty('--df-messenger-bot-message', '#2b2f33');
+      messenger.style.setProperty('--df-messenger-user-message', '#26a69a');
+      messenger.style.setProperty('--df-messenger-font-color', '#ffffff');
+      messenger.style.setProperty('--df-messenger-chat-background-color', '#121212');
+      messenger.style.setProperty('--df-messenger-button-titlebar-color', '#26a69a');
+      messenger.style.setProperty('--df-messenger-send-icon', '#ffffff');
+    } else {
+      messenger.style.setProperty('--df-messenger-bot-message', '#e1e1e1');
+      messenger.style.setProperty('--df-messenger-user-message', '#6a11cb');
+      messenger.style.setProperty('--df-messenger-font-color', '#111111');
+      messenger.style.setProperty('--df-messenger-chat-background-color', '#ffffff');
+      messenger.style.setProperty('--df-messenger-button-titlebar-color', '#6a11cb');
+      messenger.style.setProperty('--df-messenger-send-icon', '#ffffff');
+    }
+  }
+
+  // ----- Language Switch -----
+  function switchLanguage(){
+    const lang = document.getElementById('lang').value || 'en';
+    const messenger = document.querySelector('df-messenger');
+    if (messenger) messenger.setAttribute('language-code', lang);
+  }
+
+  // ----- FAQ Event Trigger + Notification -----
+  function sendEvent(eventName){
+    try {
+      const messenger = document.querySelector('df-messenger');
+      if (!messenger) return;
+      messenger.renderCustomEvent({ name: eventName, languageCode: document.getElementById('lang').value || 'en' });
+      showNotification("HealTrack Reminder", `You selected ${eventName.replace("_EVENT","")}. Learn more in the chat!`);
+    } catch(e){ console.error('sendEvent error', e); }
+  }
+
+  // ----- Notifications -----
+  function requestNotificationPermission() {
+    if (!("Notification" in window)) { alert("Your browser does not support notifications."); return; }
+    if (Notification.permission === "granted") return;
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") console.log("Notifications enabled");
+    });
+  }
+
+  function showNotification(title, message, icon = "robot.png") {
+    if (Notification.permission === "granted") {
+      new Notification(title, { body: message, icon: icon, vibrate: [200,100,200] });
+    }
+  }
+
+  // ----- Recurring Reminders -----
+  const reminders = [
+    { title: "Daily Health Tip", message: "Drink at least 8 glasses of water today!" },
+    { title: "Exercise Reminder", message: "Take a 10-minute walk or stretch for better health." },
+    { title: "Nutrition Tip", message: "Include a portion of fruits or vegetables in your meals today." },
+    { title: "First Aid Tip", message: "Check your home for emergency first aid kit availability." },
+    { title: "Vaccination Reminder", message: "Check your vaccination schedule and stay up-to-date." }
+  ];
+
+  function startReminders(){
+    // Show a random reminder every 6 hours
+    setInterval(() => {
+      const reminder = reminders[Math.floor(Math.random() * reminders.length)];
+      showNotification(reminder.title, reminder.message);
+    }, 6 * 60 * 60 * 1000); // 6 hours
+  }
+
+  // ----- Initialize on Load -----
+  window.addEventListener('DOMContentLoaded', () => {
+    const theme = localStorage.getItem('theme');
+    if(theme === 'dark') document.body.classList.add('dark-mode');
+    if(document.body.classList.contains('dark-mode')) document.getElementById('darkBtn').textContent = '☼';
+    updateMessengerTheme();
+
+    const messenger = document.querySelector('df-messenger');
+    if (messenger) {
+      messenger.style.setProperty('--df-messenger-bot-message', getComputedStyle(document.documentElement).getPropertyValue('--chat-bot-msg'));
+      messenger.style.setProperty('--df-messenger-user-message', getComputedStyle(document.documentElement).getPropertyValue('--primary'));
+    }
+
+    requestNotificationPermission();
+
+    // Example: initial notification after 5 seconds
+    setTimeout(() => {
+      showNotification("Daily Health Tip", "Remember to drink 8 glasses of water today!");
+    }, 5000);
+
+    // Start recurring reminders
+    startReminders();
+  });
+</script>
+
+
 </body>
 </html>
+
