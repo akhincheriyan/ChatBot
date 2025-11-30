@@ -20,5 +20,5 @@ The chatbot was styled and customized to match the branding theme of the website
 - Fully tested in local and hosted environments
 
 
-## Sih Problem Statement
+# SIH Problem Statement
 [ChatBot](https://akhincheriyan.github.io/ChatBot/ChatBot/index.html)
